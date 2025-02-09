@@ -5,6 +5,7 @@ public class Main {
             FileManager manager = new FileManager();
             manager.parseArgs(args);
             manager.readContents();
+            manager.printStatistics();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

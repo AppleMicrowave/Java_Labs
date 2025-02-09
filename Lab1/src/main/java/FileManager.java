@@ -21,12 +21,59 @@ public class FileManager {
     private final HashMap<String, String> destination_files = new HashMap<>();
     private final ArrayList<String> source_files = new ArrayList<>();
 
+    private final ArrayList<Integer> integers = new ArrayList<>();
+    private final ArrayList<Float> floaters = new ArrayList<>();
+    private final ArrayList<String> stringers = new ArrayList<>();
+
     private String prefix = "";
     private String path = "";
 
-    public void print() {
-        for (String file : source_files) {
-            System.out.print(file + " ");
+    public void printStatistics() {
+        if (flag_s) System.out.println("\\ \\ \\ SHORT statistics - Written lines: " + (integers.size() + floaters.size() + stringers.size()) + " \\ \\ \\");
+        if (flag_f) {
+
+            System.out.println("\\ \\ \\ FULL statistics \\ \\ \\ ");
+            System.out.println();
+
+            // Integer section
+            if (intWriter != null) {
+                int sum = 0;
+                for (int number : integers) {
+                    sum += number;
+                }
+
+                System.out.println("\\ Integers \\");
+                System.out.println("Count: " + integers.size());
+                System.out.println("Min: " + Collections.min(integers));
+                System.out.println("Max: " + Collections.max(integers));
+                System.out.println("Sum: " + sum);
+                System.out.println("Mean: " + (float)sum/(float)integers.size());
+                System.out.println();
+            }
+
+            // Float section
+            if (fltWriter != null) {
+                float sum = 0;
+                for (float number : floaters) {
+                    sum += number;
+                }
+                System.out.println("\\ Float \\");
+                System.out.println("Count: " + floaters.size());
+                System.out.println("Min: " + Collections.min(floaters));
+                System.out.println("Max: " + Collections.max(floaters));
+                System.out.println("Sum: " + sum);
+                System.out.println("Mean: " + sum / (float) floaters.size());
+                System.out.println();
+            }
+
+            // String section
+            if (strWriter != null) {
+                System.out.println("\\ String \\");
+                System.out.println("Count: " + stringers.size());
+                System.out.println("Min length: " + Collections.min(stringers).length());
+                System.out.println("Max length: " + Collections.max(stringers).length());
+                System.out.println();
+            }
         }
     }
 
@@ -46,6 +93,7 @@ public class FileManager {
                             wasInt = true;
                         }
                         intWriter.write(line + "\n");
+                        integers.add(Integer.parseInt(line));
                         break;
                     case ("float"):
                         if (!wasFlt) {
@@ -53,6 +101,7 @@ public class FileManager {
                             wasFlt = true;
                         }
                         fltWriter.write(line + "\n");
+                        floaters.add(Float.parseFloat(line));
                         break;
                     case ("string"):
                         if (!wasStr) {
@@ -60,6 +109,7 @@ public class FileManager {
                             wasStr = true;
                         }
                         strWriter.write(line + "\n");
+                        stringers.add(line);
                         break;
                 }
             }
@@ -112,7 +162,7 @@ public class FileManager {
                     path = args[i + 1];
 
                     // Check format
-                    if (!path.startsWith("/")) {
+                    if (!path.startsWith("/") || !path.endsWith("/")) {
                         throw new IllegalArgumentException("Error! Incorrect path.");
                     }
 
@@ -147,6 +197,9 @@ public class FileManager {
                     i++;
                 }
                 case "-a" -> flag_a = true;
+                case "-s" -> flag_s = true;
+                case "-f" -> flag_f = true;
+
                 case null, default -> source_files.add(args[i]);
             }
         }
