@@ -10,21 +10,23 @@ public class Pet {
         Sold
     }
 
+    private int id;
+    private String name;
+    private Category category;
+    private Tag[] tags;
+    private Status status;
+
     public Pet() {
+
     }
 
-    public Pet(int id, String name, String[] tags, Status status) {
+    public Pet(int id, String name, Tag[] tags, Category category, Status status) {
         this.id = id;
         this.name = name;
         this.tags = tags;
+        this.category = category;
         this.status = status;
     }
-
-    private int id;
-    private String name;
-    //private String category;
-    private String[] tags;
-    private Status status;
 
     public int getId() {
         return id;
@@ -42,6 +44,22 @@ public class Pet {
         this.name = name;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Tag[] getTags() {
+        return tags;
+    }
+
+    public void setTags(Tag[] tags) {
+        this.tags = tags;
+    }
+
     public Status getStatus() {
         return status;
     }
@@ -50,11 +68,6 @@ public class Pet {
         this.status = status;
     }
 
-    public String[] getTags() {
-        return tags;
-    }
 
-    public void setTags(String[] tags) {
-        this.tags = tags;
-    }
+
 }
