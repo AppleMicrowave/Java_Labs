@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <!-- Создание таблицы category -->
+    <changeSet id="create-table-category" author="Misha">
+        <createTable tableName="category">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <!-- Создание таблицы tag -->
+    <changeSet id="create-table-tag" author="Misha">
+        <createTable tableName="tag">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Создание таблицы pet -->
+    <changeSet id="create-table-pet" author="Misha">
+        <createTable tableName="pet">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="INT">
+                <constraints nullable="true" foreignKeyName="fk_pet_category"
+                             referencedTableName="category" referencedColumnNames="id"/>
+            </column>
+            <column name="status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>ALTER TABLE pet ADD CONSTRAINT chk_pet_status CHECK (status IN ('available','pending','sold'));</sql>
+    </changeSet>
+
+    <!-- Создание таблицы pet_tag -->
+    <changeSet id="create-table-pet-tag" author="Misha">
+        <createTable tableName="pet_tag">
+            <column name="pet_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_pet_tag_pet"
+                             referencedTableName="pet" referencedColumnNames="id"/>
+            </column>
+            <column name="tag_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_pet_tag_tag"
+                             referencedTableName="tag" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="pet_tag" columnNames="pet_id, tag_id"/>
+    </changeSet>
+
+</databaseChangeLog>
